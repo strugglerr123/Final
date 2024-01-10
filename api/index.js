@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-// import { configDotenv } from "dotenv";
-// configDotenv();
+import router from "./routes/user.router.js";
 import dotenv from "dotenv"
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -16,3 +15,4 @@ app.get("/",(req,res)=>{
 app.listen(3005,()=>{
     console.log("Server is running");
 })
+app.use("/api/user",router);
