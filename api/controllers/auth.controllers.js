@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcrypt";
 
-export let SignUp=async (req,res)=>{
+export let SignUp=async (req,res,next)=>{
     // console.log(req.body);
     // res.send(`All set`)
 
@@ -13,6 +13,6 @@ export let SignUp=async (req,res)=>{
         res.status(201).json(`user authentication successful !!!!`)
     } catch (error) {
         
-        res.status(201).json(`Error :- ${error}`);
+        next(error);
     }
 }

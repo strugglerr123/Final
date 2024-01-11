@@ -21,3 +21,13 @@ app.listen(3005,()=>{
 })
 app.use("/api/user", UserRouter)
 app.use("/api/auth",AuthRoter);
+
+app.use((error,req,res,next)=>{
+    let statuscode=error.statusCode||500;
+    let msg=error.msg||"Internal Error";
+    return res.status(statuscode).json({
+        success:false,
+        statuscode,
+        msg,
+    })
+})
