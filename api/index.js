@@ -1,4 +1,5 @@
 import express from "express";
+
 import mongoose from "mongoose";
 import UserRouter from "./routes/user.router.js";
 import AuthRoter from "./routes/auth.route.js";
@@ -24,7 +25,7 @@ app.use("/api/auth",AuthRoter);
 
 app.use((error,req,res,next)=>{
     let statuscode=error.statusCode||500;
-    let msg=error.msg||"Internal Error";
+    let msg=error.message||"Internal Error";
     return res.status(statuscode).json({
         success:false,
         statuscode,
