@@ -91,7 +91,7 @@ export let SignUp = () => {
         </form>
         <div className='flex mt-3'>
           <p>Have an account ?</p>
-          <Link to={"/Sign-up"}>
+          <Link to={"/Sign-in"  }>
             <span className='text-blue-600 mx-3'>sign in</span>
           </Link>
         </div>
