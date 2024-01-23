@@ -1,21 +1,23 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {sign_in_start,sign_in_success,sign_in_failure} from "../redux/user/User_Slice";
 
 export let SignIn = () => {
   let [username, setusername] = useState("")
   let [email, setemail] = useState("")
   let [passwd, setpasswd] = useState("")
-  let [errorr, seterrorr] = useState("")
-  let [loading, setloading] = useState(false)
+  let {loading , error}=useSelector((state)=>state.user)
   let navigate = useNavigate()
+  let dispatch=useDispatch();
   // let [show,setshow]=useState({});
 
   let Get = async (e) => {
     e.preventDefault()
       let b = false
     try {
-      setloading(true)
+      dispatch(sign_in_start())
       let Fdata = {username ,email, passwd }
       let res = await fetch("api/auth/SignIn", {
         method: "POST",
@@ -26,20 +28,23 @@ export let SignIn = () => {
       })
 
       let data = await res.json()
+      // errorr=data.msg;
       // setshow(data);
       console.log(data)
       if (data.success === false) {
-        setloading(false)
-        seterrorr(data.msg)
+        dispatch(sign_in_failure(data.msg));
+        // errorr=data.msg;
         b=true;
       }
-      setloading(false)
       // seterrorr(null);
-      if(b===false)navigate("/");
+      if(b===false){
+        dispatch(sign_in_success(data));
+        navigate("/");
+      }
     } catch (erro) {
       b=true;
-      setloading(false)
-      seterrorr(erro.msg)
+     dispatch(sign_in_failure(erro.msg));
+    //  errorr=erro.msg
     }
   }
   return (
@@ -86,7 +91,7 @@ export let SignIn = () => {
             <span className='text-blue-600 mx-3'>sign up</span>
           </Link>
         </div>
-        {errorr && <p className='text-red-500 mt-5'>{errorr}</p>}
+        {error && <p className='text-red-500 mt-5'>{error}</p>}
       </div>
     </React.Fragment>
   )
