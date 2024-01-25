@@ -33,3 +33,29 @@ export let SignIn=async (req,res,next)=>{
         next(error);
     }
 }
+
+export let Google=async (req,res,next)=>{
+    try {
+        let user_detail=await User.findOne({email:req.body.email});
+
+        if(user_detail){
+            let token=jwt.sign({id:user_detail._id},process.env.JWT_SECRET);
+            let {passwd:pass,...rest}=user_detail._doc;
+            res.cookie("Access_token",token,{httpOnly:true}).status(200).json(rest);
+        }
+
+        else{
+            let passwd_generated = 1 + Math.round(1e16 * Math.random());
+            let encripted_passwd=bcryptjs.hashSync(passwd_generated,11);
+            let new_user=new User({username:req.body.username,email:req.body.email,passwd:encripted_passwd,imageurl:req.body.photo});
+
+            await new_user.save();
+            let token=jwt.sign({id:user_detail._id,},process.env.JWT_SECRET);
+            let {passwd:pass, ...rest}=user_detail._doc;
+            res.cookie("Access_token",token,{httpOnly:true}).status(200).json(rest);
+        }
+        
+    } catch (error) {
+        next(error)
+    }
+}
