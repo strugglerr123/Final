@@ -19,7 +19,7 @@ export let SignIn = () => {
       let b = false
     try {
       dispatch(sign_in_start())
-      let Fdata = {username ,email, passwd }
+      let Fdata = {username ,email, passwd };
       let res = await fetch("api/auth/SignIn", {
         method: "POST",
         headers: {

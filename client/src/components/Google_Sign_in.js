@@ -15,7 +15,7 @@ export let GoogleSignIn=()=>{
 
             let pop_up=await signInWithPopup(auth,provider);
             
-            let res = await fetch("api/auth/google", {
+            let res = await fetch("api/auth/Gooogle", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

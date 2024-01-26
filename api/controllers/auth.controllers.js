@@ -45,12 +45,17 @@ export let Google=async (req,res,next)=>{
         }
 
         else{
-            let passwd_generated = 1 + Math.round(1e16 * Math.random());
+            let passwd_generated = Math.random().toString(36).slice(-8)+Math.random().toString(36).slice(-8);
             let encripted_passwd=bcryptjs.hashSync(passwd_generated,11);
-            let new_user=new User({username:req.body.username,email:req.body.email,passwd:encripted_passwd,imageurl:req.body.photo});
+            let new_user = new User({
+              username:req.body.username,
+              email: req.body.email,
+              passwd: encripted_passwd,
+              imageurl: req.body.photo,
+            })
 
             await new_user.save();
-            let token=jwt.sign({id:user_detail._id,},process.env.JWT_SECRET);
+            let token=jwt.sign({id:user_detail._id},process.env.JWT_SECRET);
             let {passwd:pass, ...rest}=user_detail._doc;
             res.cookie("Access_token",token,{httpOnly:true}).status(200).json(rest);
         }

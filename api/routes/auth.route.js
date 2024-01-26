@@ -4,6 +4,6 @@ let router = express.Router();
 
 router.post("/SignUp",SignUp);
 router.post("/SignIn",SignIn);
-router.post("/google",Google);
+router.post("/Gooogle",Google);
 
 export default router
