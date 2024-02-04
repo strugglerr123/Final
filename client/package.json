@@ -51,7 +51,7 @@
   },
   "react-dotenv": {
     "whitelist": [
-      "GOOGLE_API_KEY"
+      "FIREBASE_API_KEY"
     ]
   }
 }

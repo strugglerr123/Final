@@ -1,5 +1,9 @@
 // import React from "react";
-// import env from "react-dotenv"
+import env from "react-dotenv"
+// import path from "path"
+// import dotenv from "dotenv"
+
+
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
 // TODO: Add SDKs for Firebase products that you want to use
@@ -9,7 +13,7 @@ import { getAnalytics } from "firebase/analytics"
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // dotenv.config();
 const firebaseConfig = {
-  apiKey: "AIzaSyCMaLri3DSJF43oUQQCAbiO4saD7xi8Ka4",
+  apiKey: env.FIREBASE_API_KEY,
   authDomain: "firstproject-21bec090.firebaseapp.com",
   projectId: "firstproject-21bec090",
   storageBucket: "firstproject-21bec090.appspot.com",

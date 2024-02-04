@@ -3,10 +3,12 @@ import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
 import { app } from "../Firebase";
 import { useDispatch } from "react-redux";
 import {sign_in_success} from "../redux/user/User_Slice";
+import { useNavigate } from "react-router-dom";
 
 export let GoogleSignIn=()=>{
 
     let dispatch=useDispatch();
+    let navigate=useNavigate();
 
     let Google=async()=>{
         try {
@@ -14,6 +16,8 @@ export let GoogleSignIn=()=>{
             let auth=getAuth(app);
 
             let pop_up=await signInWithPopup(auth,provider);
+
+            console.log(pop_up);
             
             let res = await fetch("api/auth/Gooogle", {
               method: "POST",
@@ -29,7 +33,7 @@ export let GoogleSignIn=()=>{
 
             let obtained_data=await res.json();
             dispatch(sign_in_success(obtained_data));
-
+            navigate("/");
         } 
         catch (error) {
             console.log(`Cannot logged to Google ${error}`)
