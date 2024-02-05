@@ -1,19 +1,19 @@
-import React from 'react'
-import {FaSearch} from "react-icons/fa"
-import { Link } from 'react-router-dom';
-import {useSelector} from "react-redux"
+import React from "react"
+import { FaSearch } from "react-icons/fa"
+import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 export default function Header() {
-  
-  let { curr_user } = useSelector((state) => state.user)
+  let curr_user = useSelector((state) => state.user)
+  // console.log(curr_user)
 
   return (
     <header className='bg-slate-300 shadow-md'>
       <div className='flex justify-between items-center mx-auto max-w-6xl p-3'>
         <Link to={"/"}>
           <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-            <span className='text-slate-500'>Only</span>
-            <span className='text-slate-700'>Estate</span>
+            <span className='text-slate-500'>Apna</span>
+            <span className='text-slate-700'>Ghar</span>
           </h1>
         </Link>
         <form className='bg-slate-100 p-3 rounded-lg flex items-center'>
@@ -36,8 +36,22 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to={"/Sign-in"}>
-            {curr_user ? (<img src={curr_user.imageurl} alt='Error In Loading' />) : (<li className='text-slate-700 hover:underline'>Sign In</li>)}
+          <Link to={"/profile"}>
+            {curr_user.currentuser ? (
+              <img
+                src={curr_user.currentuser.imageurl}
+                alt='Error In Loading'
+                style={{
+                  border: "2px solid green",
+                  borderRadius: "100px",
+                  height: "45px",
+                  marginTop: "-9px",
+                  width: "45px",
+                }}
+              />
+            ) : (
+              <li className='text-slate-700 hover:underline'>Sign In</li>
+            )}
           </Link>
           <Link to={"/Sign-up"}>
             <li className='text-slate-700 hover:underline'>Sign Up</li>
@@ -47,4 +61,3 @@ export default function Header() {
     </header>
   )
 }
-
