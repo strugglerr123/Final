@@ -43,7 +43,9 @@ export let Profile = () => {
         setimagepercent(Math.round(progress))
       },
       (error) => {
-        setimageerror(error)
+        setimageerror(true);
+        // let msg=error.message.json;
+        // console.log(msg);
       },
       () => {
         getDownloadURL(uploadtask.snapshot.ref).then((downloadurl) => {
@@ -80,7 +82,7 @@ export let Profile = () => {
         <p className='self-center'>
           {imageerror ? (
             <span className='text-red-600 font-semibold'>
-              There Some Error Occured {imageerror}
+              {`There Some Error Occured (Must be of size <= 2mb)`}
             </span>
           ) : imagepercent > 0 && imagepercent < 100 ? (
             <span className='text-green-600 font-semibold'>
@@ -91,6 +93,7 @@ export let Profile = () => {
               File Uploaded Successfully
             </span>
           ) : ""}
+          
         </p>
         <input
           type='username'
