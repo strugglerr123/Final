@@ -1,23 +1,97 @@
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage"
+import { app } from "../Firebase"
 // import { Private_profile } from "../components/Private_profile"
 
 export let Profile = () => {
   let { currentuser } = useSelector((state) => state.user)
+  let [uploadedfile, setuploadedfile] = useState(undefined)
+  let [imagepercent, setimagepercent] = useState(0)
+  let [imageerror, setimageerror] = useState(false)
+  let [imageuploadedinfo, setimageuploadedinfo] = useState({})
+  let photofile = useRef()
+
+  /*console.log(photofile.current)
+  console.log(uploadedfile)
+  console.log(imagepercent)
+  console.log(imageerror);
+  console.log(imageuploadedinfo);*/
+
+  useEffect(() => {
+    if (uploadedfile) {
+      // console.log("Yes detected")
+      DealWithUploadedfile(uploadedfile)
+    }
+  }, [uploadedfile])
+
+  let DealWithUploadedfile = (file) => {
+    let storage = getStorage(app)
+    let filename = new Date().getTime() + file.name
+    let storageref = ref(storage, filename)
+    let uploadtask = uploadBytesResumable(storageref, file)
+
+    uploadtask.on(
+      "state_changed",
+      (snapshot) => {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        setimagepercent(Math.round(progress))
+      },
+      (error) => {
+        setimageerror(error)
+      },
+      () => {
+        getDownloadURL(uploadtask.snapshot.ref).then((downloadurl) => {
+          setimageuploadedinfo({ ...imageuploadedinfo, imageurl: downloadurl })
+        })
+      }
+    )
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-center text-4xl '>
+      <div className='text-center text-4xl font-semibold'>
         Welcome{" "}
         <h1 className='inline text-green-500 underline'>
           {currentuser.username}
         </h1>
-      </h1>
+      </div>
       <form action='profile' className='flex flex-col gap-3 mt-2'>
+        <input
+          type='file'
+          onClick={(e) => {
+            setuploadedfile(e.target.files[0])
+          }}
+          ref={photofile}
+          hidden
+          accept='image/*'
+        />
         <img
+          onClick={() => photofile.current.click()}
           src={currentuser.imageurl}
           alt='Error in Loading'
           className='h-32 w-32 rounded-[100px] cursor-pointer self-center'
         />
+        <p className='self-center'>
+          {imageerror ? (
+            <span className='text-red-600 font-semibold'>
+              There Some Error Occured {imageerror}
+            </span>
+          ) : imagepercent > 0 && imagepercent < 100 ? (
+            <span className='text-green-600 font-semibold'>
+              Image Uploading Is In progress {imagepercent}
+            </span>
+          ) : imagepercent === 100? (
+            <span className='text-green-600 font-semibold'>
+              File Uploaded Successfully
+            </span>
+          ) : ""}
+        </p>
         <input
           type='username'
           placeholder='Username'
