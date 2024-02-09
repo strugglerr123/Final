@@ -3,7 +3,9 @@ import express from "express";
 import mongoose from "mongoose";
 import UserRouter from "./routes/user.router.js";
 import AuthRoter from "./routes/auth.route.js";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("Successfully connected to atlas");
@@ -13,6 +15,7 @@ mongoose.connect(process.env.MONGO).then(()=>{
 
 let app=express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/",(req,res)=>{
     res.send(`ohhhhh ${req.query.name}`);

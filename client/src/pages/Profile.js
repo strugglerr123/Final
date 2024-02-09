@@ -75,7 +75,7 @@ export let Profile = () => {
         />
         <img
           onClick={() => photofile.current.click()}
-          src={currentuser.imageurl}
+          src={imageuploadedinfo.imageurl||currentuser.imageurl}
           alt='Error in Loading'
           className='h-32 w-32 rounded-[100px] cursor-pointer self-center'
         />

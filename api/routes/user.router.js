@@ -1,9 +1,11 @@
-import express from "express";
-import { test } from "../controllers/user.controllers.js";
+import express from "express"
+import { Updateuser, test } from "../controllers/user.controllers.js"
 import { fun } from "../controllers/user.controllers.js";
-let router=express.Router();
+import { VeryfyUser } from "../utilis/Verify_user.js";
+let router = express.Router()
 
-router.get("/test",test)
-router.get("/test2",fun);
+router.get("/test", test)
+router.get("/test2", fun)
+router.post("/update/:id",VeryfyUser, Updateuser)
 
-export default router;
+export default router
