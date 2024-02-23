@@ -15,6 +15,9 @@ import {
   DeleteUserFailure,
   DeleteUserStart,
   DeleteUserSuccess,
+  SignOutUserStart,
+  SignOutUserFailure,
+  SignOutUserSuccess,
 } from "../redux/user/User_Slice.js"
 // import { json } from "express"
 // import { Private_profile } from "../components/Private_profile"
@@ -123,6 +126,21 @@ export let Profile = () => {
     }
   }
 
+  let Leavinguser = async () => {
+    try {
+      dispatch(SignOutUserStart())
+      let leave = await fetch("api/auth/SignOut")
+      let data=await leave.json();
+      if(data.success===false){
+        dispatch(SignOutUserFailure(data.msg));
+        return;
+      }
+      dispatch(SignOutUserSuccess(data));
+    } catch (error) {
+      dispatch(SignOutUserFailure(error.msg))
+    }
+  }
+
   // console.log(imageuploadedinfo," ",currentuser.imageurl);
 
   return (
@@ -209,7 +227,12 @@ export let Profile = () => {
         >
           Delete Account
         </span>
-        <span className='text-red-600 font-semibold'>Sign Out</span>
+        <span
+          className='text-red-600 font-semibold hover:cursor-pointer'
+          onClick={Leavinguser}
+        >
+          Sign Out
+        </span>
       </form>
     </div>
   )

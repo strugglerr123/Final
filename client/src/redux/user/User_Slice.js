@@ -33,24 +33,39 @@ let User_Slice = createSlice({
       state.error = null
     },
 
-    UpdateUserFailure: (state,action) => {
-        state.error=action.payloadload
-      state.loading = false;
+    UpdateUserFailure: (state, action) => {
+      state.error = action.payloadload
+      state.loading = false
     },
 
-    DeleteUserStart:(state)=>{
-      state.loading=true;
+    DeleteUserStart: (state) => {
+      state.loading = true
     },
 
-    DeleteUserSuccess:(state,action)=>{
-      state.currentuser=null;
-      state.loading=false;
-      state.error=null;
+    DeleteUserSuccess: (state, action) => {
+      state.currentuser = null
+      state.loading = false
+      state.error = null
     },
-    DeleteUserFailure:(state,action)=>{
-      state.error=action.payload;
-      state.loading=false
-    }
+    DeleteUserFailure: (state, action) => {
+      state.error = action.payload
+      state.loading = false
+    },
+
+    SignOutUserStart: (state) => {
+      state.loading = true
+    },
+
+    SignOutUserSuccess: (state, action) => {
+      state.currentuser = null
+      state.loading = false
+      state.error = null
+    },
+
+    SignOutUserFailure: (state, action) => {
+      state.error = action.payload
+      state.loading = false
+    },
   },
 })
 
@@ -63,6 +78,10 @@ export let {
   UpdateUserFailure,
   DeleteUserStart,
   DeleteUserSuccess,
-  DeleteUserFailure
+  DeleteUserFailure,
+  SignOutUserStart,
+  SignOutUserSuccess,
+  SignOutUserFailure
+  
 } = User_Slice.actions
 export default User_Slice.reducer
