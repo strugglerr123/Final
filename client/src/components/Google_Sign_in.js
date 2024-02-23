@@ -19,7 +19,7 @@ export let GoogleSignIn=()=>{
 
             console.log(pop_up);
             
-            let res = await fetch("api/auth/Gooogle", {
+            let res = await fetch("/api/auth/Gooogle", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

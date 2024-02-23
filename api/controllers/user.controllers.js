@@ -11,7 +11,12 @@ export let fun = (req, res) => {
 
 export let Updateuser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
-    return next(ErrorHandler(401, "Update Your own Account And Mind Your Own Business -->> Mahapurus 'Rohit Kumar' "))
+    return next(
+      ErrorHandler(
+        401,
+        "Update Your own Account And Mind Your Own Business -->> Mahapurus 'Rohit Kumar' "
+      )
+    )
 
   try {
     if (req.body.passwd) {
@@ -32,12 +37,21 @@ export let Updateuser = async (req, res, next) => {
     )
 
     let { passwd, ...rest } = updateuser._doc
-    res.status(200).json({rest});
+    res.status(200).json({ rest })
+  } catch (error) {
+    next(error)
+  }
+}
 
-
-  } 
-  catch (error) {
-
+export let Deleteuser = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(ErrorHandler(401, "You Can Only Delete Your wn Account !!!~~"))
+  }
+  try {
+    await User.findByIdAndDelete(req.params.id)
+    res.clearCookie("Access_token");
+    res.status(200).json(`User Has Been Deleted !!!!`)
+  } catch (error) {
     next(error)
   }
 }
