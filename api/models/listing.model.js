@@ -1,30 +1,70 @@
 import mongoose from "mongoose"
 
-let listingschema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+let listingschema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
 
-  descriptions: {
-    type: String,
-    required: true,
-  },
+    descriptions: {
+      type: String,
+      required: true,
+    },
 
-  address: {
-    type: String,
-    required: true,
-  },
+    address: {
+      type: String,
+      required: true,
+    },
 
-  originalprice: {
-    type: Number,
-    required: true,
-  },
+    originalprice: {
+      type: Number,
+      required: true,
+    },
 
-  sellingprice: {
-    type: String,
-    required: true,
-  },
+    sellingprice: {
+      type: String,
+      required: true,
+    },
 
-  
-})
+    ouantity: {
+      type: Number,
+      required: true,
+    },
+
+    refurbunished: {
+      type: Boolean,
+      required: true,
+    },
+
+    deliverable: {
+      type: Boolean,
+      required: true,
+    },
+
+    type: {
+      type: String,
+      required: true,
+    },
+
+    offer: {
+      type: Boolean,
+      required: true,
+    },
+
+    imageurl: {
+      type: Array,
+      required: true,
+    },
+
+    userref: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+)
+
+let Listing = mongoose.model("Listing", listingschema);
+
+export default Listing;
