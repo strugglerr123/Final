@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 import {
   getDownloadURL,
   getStorage,
@@ -28,6 +29,7 @@ export let Profile = () => {
   let [imagepercent, setimagepercent] = useState(0)
   let [imageerror, setimageerror] = useState(false)
   let [imageuploadedinfo, setimageuploadedinfo] = useState({})
+  // let [updatecurrentuser, setupdatecurrentuser] = useState(currentuser)
   let photofile = useRef()
 
   let dispatch = useDispatch()
@@ -48,6 +50,8 @@ export let Profile = () => {
       // console.log("Yes detected")
       DealWithUploadedfile(uploadedfile)
     }
+
+    // setupdatecurrentuser(currentuser.rest || currentuser)
   }, [uploadedfile])
 
   let DealWithUploadedfile = (file) => {
@@ -130,12 +134,12 @@ export let Profile = () => {
     try {
       dispatch(SignOutUserStart())
       let leave = await fetch("api/auth/SignOut")
-      let data=await leave.json();
-      if(data.success===false){
-        dispatch(SignOutUserFailure(data.msg));
-        return;
+      let data = await leave.json()
+      if (data.success === false) {
+        dispatch(SignOutUserFailure(data.msg))
+        return
       }
-      dispatch(SignOutUserSuccess(data));
+      dispatch(SignOutUserSuccess(data))
     } catch (error) {
       dispatch(SignOutUserFailure(error.msg))
     }
@@ -144,7 +148,7 @@ export let Profile = () => {
   // console.log(imageuploadedinfo," ",currentuser.imageurl);
 
   return (
-    <div className='p-3 max-w-lg mx-auto'>
+    <div className='p-2 max-w-lg mx-auto'>
       <div className='text-center text-4xl font-semibold'>
         Welcome{" "}
         <h1 className='inline text-green-500 underline'>
@@ -169,7 +173,7 @@ export let Profile = () => {
           onClick={() => photofile.current.click()}
           src={imageuploadedinfo.imageurl || currentuser.imageurl}
           alt='Error in Loading'
-          className='h-32 w-32 rounded-[100px] cursor-pointer self-center'
+          className='h-28 w-28 rounded-[100px] cursor-pointer self-center'
         />
         <p className='self-center'>
           {imageerror ? (
@@ -194,7 +198,7 @@ export let Profile = () => {
           id='username'
           defaultValue={currentuser.username}
           onChange={UpdateUserDetail}
-          className='p-3 rounded-lg'
+          className='p-2 rounded-lg'
         />
         <input
           type='email'
@@ -202,7 +206,7 @@ export let Profile = () => {
           id='email'
           defaultValue={currentuser.email}
           onChange={UpdateUserDetail}
-          className='p-3 rounded-lg'
+          className='p-2 rounded-lg'
         />
         <input
           type='password'
@@ -210,17 +214,23 @@ export let Profile = () => {
           autoComplete='on'
           placeholder='Password'
           onChange={UpdateUserDetail}
-          className='p-3 rounded-lg '
+          className='p-2 rounded-lg '
         />
         <button
           type='submit'
-          className='uppercase font-bold bg-slate-700 p-3 rounded-lg hover:opacity-90 text-white'
+          className='uppercase font-bold bg-slate-700 p-2 rounded-lg hover:opacity-90 text-white'
         >
           Update
         </button>
+        <Link
+          className='uppercase font-bold bg-green-700 p-2 rounded-lg hover:opacity-90 text-center'
+          to={"/create-listing"}
+        >
+          go to listing
+        </Link>
       </form>
 
-      <form action='Query' className='flex justify-between mt-4'>
+      <form action='Query' className='flex justify-between mt-2'>
         <span
           className='text-red-600  font-semibold hover:cursor-pointer'
           onClick={Deletaccount}

@@ -4,8 +4,13 @@ import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 
 export default function Header() {
-  let curr_user = useSelector((state) => state.user)
+  let curr_user = useSelector((state) => state.user);
+  // let [updatecurrentuser,setupdatecurrentuser]=React.useState(curr_user.currentuser);
   // console.log(curr_user)
+
+  // React.useEffect(()=>{
+  //   setupdatecurrentuser(curr_user.currentuser.rest||curr_user.currentuser);
+  // },[updatecurrentuser])
 
   return (
     <header className='bg-slate-300 shadow-md'>
