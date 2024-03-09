@@ -23,11 +23,11 @@ let listingschema = new mongoose.Schema(
     },
 
     sellingprice: {
-      type: String,
+      type: Number,
       required: true,
     },
 
-    ouantity: {
+    quantity: {
       type: Number,
       required: true,
     },
