@@ -14,18 +14,31 @@ export default function Listing() {
     imageurl: [],
   })
 
+  let [imageerror, setimageerror] = React.useState(false)
+
+  let [progress, setprogress] = React.useState(null)
+
   console.log(files)
 
   let Storefile = (e) => {
-    if (files.length > 0 && files.length <= 6) {
+    if (files.length > 0 && files.length + formdata.imageurl.length <= 6) {
       let allfiles = []
       for (let i = 0; i < files.length; i++) {
         allfiles.push(Upload_one_one(files[i]))
       }
 
-      Promise.all(allfiles).then((urls) => {
-        setformdata({ ...formdata, imageurl: formdata.imageurl.concat(urls) })
-      })
+      Promise.all(allfiles)
+        .then((urls) => {
+          setformdata({ ...formdata, imageurl: formdata.imageurl.concat(urls) })
+          setimageerror(false)
+        })
+        .catch((err) => {
+          setimageerror(`Image Must be of apropriate size ${err}`)
+        })
+    } else {
+      setimageerror(
+        `Error because of ${formdata.imageurl.length} is max or min than expected one !!!!!!`
+      )
     }
   }
 
@@ -40,7 +53,8 @@ export default function Listing() {
         "state_changed",
         (snapshot) => {
           let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log(`completed ${progress}`)
+          console.log(`completed ${Math.round(progress)}`)
+          setprogress(Math.round(progress));
         },
 
         (error) => {
@@ -55,6 +69,17 @@ export default function Listing() {
       )
     })
   }
+
+  let deleteuploadedphoto=(index)=>{
+    setformdata({
+      ...formdata,
+      imageurl: formdata.imageurl.filter((u,i)=>{
+        return i!=index;
+      })
+    })
+  }
+
+  React.useEffect(() => {}, [progress])
 
   console.log(formdata)
 
@@ -157,7 +182,7 @@ export default function Listing() {
               First Image will cover (max-6)
             </span>
           </p>
-          <div className='flex gap-3'>
+          <div className='flex gap-3'>``
             <input
               type='file'
               id='images'
@@ -175,6 +200,26 @@ export default function Listing() {
             >
               upload
             </button>
+            <p className='text-center'>
+              {imageerror ? (
+                <span className='text-red-600'>{imageerror}</span>
+              ) : (
+                <span className='text-green-600'>{progress}</span>
+              )}
+            </p>
+          </div>
+          <div className='grid grid-cols-3 gap-3'>
+            {formdata.imageurl.map((u,i) => (
+              <div className="text-center">
+                <img
+                key={u}
+                  src={u}
+                  alt='Error In Loading'
+                  className='h-36 w-56 rounded-lg'
+                />
+                <button type="button" onClick={()=>{deleteuploadedphoto(i)}} className="font-bold text-red-500 border-red-400 border-[1px] rounded-lg bg-red-100 mt-2">Delete</button>
+              </div>
+            ))}
           </div>
           <button className='border border-blue-700 bg-blue-200 hover:opacity-85 p-3 rounded-lg hover:shadow-md uppercase'>
             Create Listing
