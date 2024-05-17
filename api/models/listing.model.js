@@ -42,8 +42,8 @@ let listingschema = new mongoose.Schema(
       required: true,
     },
 
-    type: {
-      type: String,
+    sell: {
+      type: Boolean,
       required: true,
     },
 

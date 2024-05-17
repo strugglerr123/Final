@@ -12,6 +12,16 @@ export default function Listing() {
 
   let [formdata, setformdata] = React.useState({
     imageurl: [],
+    name: "",
+    descriptions: "",
+    address: "",
+    originalprice: 0,
+    sellingprice: 0,
+    quantity: 0,
+    refurbunished: false,
+    deliverable: false,
+    sell:0 ,
+    offer:false,
   })
 
   let [imageerror, setimageerror] = React.useState(false)
@@ -74,10 +84,14 @@ export default function Listing() {
     setformdata({
       ...formdata,
       imageurl: formdata.imageurl.filter((u,i)=>{
-        return i!=index;
+        return i!==index;
       })
     })
   }
+
+  let Changeed_name=(e)=>{
+    
+  };
 
   React.useEffect(() => {}, [progress])
 
@@ -97,6 +111,8 @@ export default function Listing() {
             id='name'
             maxLength={"60"}
             minLength={"10"}
+            value={formdata.name}
+            onChange={(e)=>setformdata({})}
             required
           />
           <textarea
@@ -104,6 +120,8 @@ export default function Listing() {
             placeholder='Descriptions'
             className='border p-3 rounded-lg text-center'
             id='descriptions'
+            value={formdata.descriptions}
+            onChange={Changeed_name}
             required
           />
           <input
@@ -111,6 +129,8 @@ export default function Listing() {
             placeholder='Address'
             className='border p-3 rounded-lg text-center'
             id='address'
+            value={formdata.address}
+            onChange={Changeed_name}
             required
           />
           <input
@@ -118,6 +138,8 @@ export default function Listing() {
             placeholder='Type'
             className='border p-3 rounded-lg text-center'
             id='type'
+            value={formdata.type}
+            onChange={Changeed_name}
             required
           />
           <div className=' flex gap-4 flex-wrap'>
@@ -126,6 +148,8 @@ export default function Listing() {
                 type='checkbox'
                 name='refurbunished'
                 id='refurbunished'
+                checked={formdata.refurbunished}
+                onChange={Changeed_name}
                 className='w-5'
               />
               <span>Refurbunished</span>
@@ -136,11 +160,13 @@ export default function Listing() {
                 name='deliverable'
                 id='deliverable'
                 className='w-5'
+                checked={formdata.deliverable}
+                onChange={Changeed_name}
               />
               <span>Deliverable</span>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' name='offer' id='offer' className='w-5' />
+              <input type='checkbox' name='offer' id='offer' className='w-5' checked={formdata.offer} onChange={Changeed_name} />
               <span>Offer</span>
             </div>
           </div>
@@ -151,6 +177,8 @@ export default function Listing() {
                 name='originalprice'
                 id='originalprice'
                 className='p-2 border border-grey-400 rounded-lg w-20'
+                value={formdata.originalprice}
+                onChange={Changeed_name}
               />
               <span>Originalprice</span>
             </div>
@@ -159,6 +187,8 @@ export default function Listing() {
                 type='number'
                 name='sellingprice'
                 id='sellingprice'
+                value={formdata.sellingprice}
+                onChange={Changeed_name}
                 className='p-2 border border-grey-400 rounded-lg w-20 '
               />
               <span>Sellingprice</span>
@@ -168,6 +198,8 @@ export default function Listing() {
                 type='number'
                 name='quantity'
                 id='quantity'
+                value={formdata.quantity}
+                onChange={Changeed_name}
                 className='p-2 border border-grey-400 rounded-lg w-20'
               />
               <span>Quantity</span>
@@ -182,7 +214,7 @@ export default function Listing() {
               First Image will cover (max-6)
             </span>
           </p>
-          <div className='flex gap-3'>``
+          <div className='flex gap-3'>
             <input
               type='file'
               id='images'
@@ -209,15 +241,23 @@ export default function Listing() {
             </p>
           </div>
           <div className='grid grid-cols-3 gap-3'>
-            {formdata.imageurl.map((u,i) => (
-              <div className="text-center">
+            {formdata.imageurl.map((u, i) => (
+              <div className='text-center'>
                 <img
-                key={u}
+                  key={u}
                   src={u}
                   alt='Error In Loading'
                   className='h-36 w-56 rounded-lg'
                 />
-                <button type="button" onClick={()=>{deleteuploadedphoto(i)}} className="font-bold text-red-500 border-red-400 border-[1px] rounded-lg bg-red-100 mt-2">Delete</button>
+                <button
+                  type='button'
+                  onClick={() => {
+                    deleteuploadedphoto(i)
+                  }}
+                  className='font-bold text-red-500 border-red-400 border-[1px] rounded-lg bg-red-100 mt-2'
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
