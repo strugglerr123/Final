@@ -52,6 +52,16 @@ let listingschema = new mongoose.Schema(
       required: true,
     },
 
+    sell:{
+      type:Boolean,
+      required:true,
+    },
+
+    buy:{
+      type:Boolean,
+      required:true,
+    },
+
     imageurl: {
       type: Array,
       required: true,

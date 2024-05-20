@@ -20,15 +20,18 @@ export default function Listing() {
     quantity: 0,
     refurbunished: false,
     deliverable: false,
+    sell:false,
+    buy:false,
     sell:0 ,
     offer:false,
+    type:"",
   })
 
   let [imageerror, setimageerror] = React.useState(false)
 
   let [progress, setprogress] = React.useState(null)
 
-  console.log(files)
+  console.log("The uploaded files are .... ",files)
 
   let Storefile = (e) => {
     if (files.length > 0 && files.length + formdata.imageurl.length <= 6) {
@@ -90,12 +93,34 @@ export default function Listing() {
   }
 
   let Changeed_name=(e)=>{
-    
+
+    if(e.target.id==="sell"||e.target.id==="buy"){
+      
+      
+    }
+
+    if(e.target.id==="refurbunished"||e.target.id==="offer"||e.target.id==="deliverable"){
+      setformdata({
+        ...formdata,
+        [e.target.id]:e.target.checked
+      })
+    }
+
+    if (
+      e.target.id === "name" ||
+      e.target.id === "address" ||
+      e.target.id === "descriptions"
+    ) {
+      setformdata({
+        ...formdata,
+        [e.target.id]: e.target.value,
+      })
+    }
   };
 
   React.useEffect(() => {}, [progress])
 
-  console.log(formdata)
+  console.log(`Input Datas are ..... `,formdata)
 
   return (
     <main className=' p-2 max-w-4xl mx-auto'>
@@ -112,7 +137,7 @@ export default function Listing() {
             maxLength={"60"}
             minLength={"10"}
             value={formdata.name}
-            onChange={(e)=>setformdata({})}
+            onChange={Changeed_name}
             required
           />
           <textarea
@@ -164,6 +189,28 @@ export default function Listing() {
                 onChange={Changeed_name}
               />
               <span>Deliverable</span>
+            </div>
+            <div className='flex gap-2'>
+              <input
+                type='checkbox'
+                name='sell'
+                id='sell'
+                className='w-5'
+                checked={formdata.sell}
+                onChange={Changeed_name}
+              />
+              <span>Sell</span>
+            </div>
+            <div className='flex gap-2'>
+              <input
+                type='checkbox'
+                name='buy'
+                id='buy'
+                className='w-5'
+                checked={formdata.buy}
+                onChange={Changeed_name}
+              />
+              <span>buy</span>
             </div>
             <div className='flex gap-2'>
               <input type='checkbox' name='offer' id='offer' className='w-5' checked={formdata.offer} onChange={Changeed_name} />
