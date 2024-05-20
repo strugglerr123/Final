@@ -1,3 +1,4 @@
+import Listing from "../models/listing.model.js"
 import User from "../models/user.model.js"
 import { ErrorHandler } from "../utilis/error.js"
 import bcryptjs from "bcrypt"
@@ -53,5 +54,20 @@ export let Deleteuser = async (req, res, next) => {
     res.status(200).json(`User Has Been Deleted !!!!`)
   } catch (error) {
     next(error)
+  }
+}
+
+export let ShowListing=async (req,res,next)=>{
+  if(req.user._id===req.params._id){
+    try {
+      let listing = await Listing.find({userref:req.params.id})
+      res.status(200).json(listing)
+    } 
+    catch (error) {
+      next(error)
+    }
+  }
+  else{
+    return next(ErrorHandler(401,"You Can Only View Your Own Listing"))
   }
 }

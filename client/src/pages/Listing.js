@@ -1,5 +1,6 @@
 import React from "react"
 import {useSelector} from "react-redux"
+import {useNavigate} from "react-router-dom"
 import {
   getDownloadURL,
   getStorage,
@@ -11,6 +12,7 @@ import { app } from "../Firebase.js"
 export default function Listing() {
   let [files, setfiles] = React.useState([])
   let { currentuser } = useSelector((state) => state.user)
+  let navigate=useNavigate();
   let [formdata, setformdata] = React.useState({
     imageurl: [],
     name: "",
@@ -170,6 +172,7 @@ export default function Listing() {
       if(data.success===false){
         SetError(data.msg);
       }
+      navigate(`/listing/${data._id}`)
     }
     catch (error) {
       SetError(error.msg);
@@ -197,8 +200,8 @@ export default function Listing() {
             placeholder='Name'
             className='border p-2 rounded-lg text-center'
             id='name'
-            maxLength={"60"}
-            minLength={"10"}
+            maxLength={"30"}
+            minLength={"4"}
             value={formdata.name}
             onChange={Changeed_name}
             required
@@ -335,6 +338,7 @@ export default function Listing() {
             <input
               type='file'
               id='images'
+              // key={1}
               accept='images/*'
               multiple
               className='P-2 border border-gray-600 rounded w-full self-center'
@@ -344,6 +348,7 @@ export default function Listing() {
             />
             <button
               type='button'
+              // key={2}
               className='p-[1.5] text-red-400 border border-red-600 uppercase hover:shadow-lg disabled:opacity-70 rounded'
               onClick={Storefile}
             >
@@ -361,12 +366,13 @@ export default function Listing() {
             {formdata.imageurl.map((u, i) => (
               <div className='text-center'>
                 <img
-                  key={u}
+                  key={i}
                   src={u}
                   alt='Error In Loading'
                   className='h-36 w-56 rounded-lg'
                 />
                 <button
+                  key={1}
                   type='button'
                   onClick={() => {
                     deleteuploadedphoto(i)
@@ -378,7 +384,7 @@ export default function Listing() {
               </div>
             ))}
           </div>
-          <button className='border border-blue-700 bg-blue-200 hover:opacity-85 p-3 rounded-lg hover:shadow-md uppercase' disabled={Loading || progress}>
+          <button className='border border-blue-700 bg-blue-200 hover:opacity-85 p-3 rounded-lg hover:shadow-md uppercase' >
             {Loading ? <p>UpLoading......</p> : <p>UpLoad</p>}
           </button>
           {Error ? <p className='text-red-500'>{Error}</p> : null}
