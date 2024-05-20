@@ -1,4 +1,5 @@
 import React from "react"
+import {useSelector} from "react-redux"
 import {
   getDownloadURL,
   getStorage,
@@ -9,7 +10,7 @@ import { app } from "../Firebase.js"
 
 export default function Listing() {
   let [files, setfiles] = React.useState([])
-
+  let { currentuser } = useSelector((state) => state.user)
   let [formdata, setformdata] = React.useState({
     imageurl: [],
     name: "",
@@ -21,8 +22,7 @@ export default function Listing() {
     refurbunished: false,
     deliverable: false,
     sell:false,
-    buy:false,
-    sell:0 ,
+    buy:false,  
     offer:false,
     type:"",
   })
@@ -30,6 +30,10 @@ export default function Listing() {
   let [imageerror, setimageerror] = React.useState(false)
 
   let [progress, setprogress] = React.useState(null)
+
+  let [Error,SetError]=React.useState(null);
+
+  let [Loading,setLoading]=React.useState(false);
 
   console.log("The uploaded files are .... ",files)
 
@@ -94,8 +98,25 @@ export default function Listing() {
 
   let Changeed_name=(e)=>{
 
+    // console.log(` oooooooooooo  `,e.target);
+
     if(e.target.id==="sell"||e.target.id==="buy"){
-      
+     if(e.target.id==="sell") {
+      setformdata({
+        ...formdata,
+        buy:false,
+        [e.target.id]:e.target.checked,
+        type:e.target.id
+      })
+     }
+     else{
+      setformdata({
+        ...formdata,
+        sell:false,
+        [e.target.id]:e.target.checked,
+        type:e.target.id
+      })
+     }
       
     }
 
@@ -109,7 +130,10 @@ export default function Listing() {
     if (
       e.target.id === "name" ||
       e.target.id === "address" ||
-      e.target.id === "descriptions"
+      e.target.id === "descriptions" ||
+      e.target.id === "quantity" ||
+      e.target.id === "originalprice" ||
+      e.target.id === "sellingprice"
     ) {
       setformdata({
         ...formdata,
@@ -118,21 +142,60 @@ export default function Listing() {
     }
   };
 
+  let FormSubmit=async (e)=>{
+    e.preventDefault();
+    try {
+      if(formdata.imageurl.length<1){
+        SetError(`Upload Atleast 1 Photo ..........`)
+        return;
+      }
+      else if (formdata.imageurl.length >= 7){
+        SetError(`Number Of Images Must be less than 7`);
+        return;
+      }
+      setLoading(true)
+      SetError(false);
+      let res = await fetch(`api/listing/Create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formdata,
+          userref:currentuser._id
+        }),
+      })
+      let data=await res.json();
+      setLoading(false);
+      if(data.success===false){
+        SetError(data.msg);
+      }
+    }
+    catch (error) {
+      SetError(error.msg);
+      setLoading(false);
+    }
+  }
+
   React.useEffect(() => {}, [progress])
 
-  console.log(`Input Datas are ..... `,formdata)
+  // console.log(`Input Datas are ..... `,formdata)
 
   return (
     <main className=' p-2 max-w-4xl mx-auto'>
-      <h1 className='my-4 flex flex-col uppercase font-semibold text-center text-4xl'>
+      <h1 className='my-2 flex flex-col uppercase font-semibold text-center text-4xl'>
         Create listing
       </h1>
-      <form action='listing' className='flex flex-col sm:flex-row'>
+      <form
+        action='listing'
+        className='flex flex-col sm:flex-row'
+        onSubmit={FormSubmit}
+      >
         <div className='flex flex-col gap-2 flex-1 mr-10'>
           <input
             type='text'
             placeholder='Name'
-            className='border p-3 rounded-lg text-center'
+            className='border p-2 rounded-lg text-center'
             id='name'
             maxLength={"60"}
             minLength={"10"}
@@ -167,7 +230,7 @@ export default function Listing() {
             onChange={Changeed_name}
             required
           />
-          <div className=' flex gap-4 flex-wrap'>
+          <div className=' flex gap-3 flex-wrap'>
             <div className='flex gap-2'>
               <input
                 type='checkbox'
@@ -213,7 +276,14 @@ export default function Listing() {
               <span>buy</span>
             </div>
             <div className='flex gap-2'>
-              <input type='checkbox' name='offer' id='offer' className='w-5' checked={formdata.offer} onChange={Changeed_name} />
+              <input
+                type='checkbox'
+                name='offer'
+                id='offer'
+                className='w-5'
+                checked={formdata.offer}
+                onChange={Changeed_name}
+              />
               <span>Offer</span>
             </div>
           </div>
@@ -308,9 +378,10 @@ export default function Listing() {
               </div>
             ))}
           </div>
-          <button className='border border-blue-700 bg-blue-200 hover:opacity-85 p-3 rounded-lg hover:shadow-md uppercase'>
-            Create Listing
+          <button className='border border-blue-700 bg-blue-200 hover:opacity-85 p-3 rounded-lg hover:shadow-md uppercase' disabled={Loading || progress}>
+            {Loading ? <p>UpLoading......</p> : <p>UpLoad</p>}
           </button>
+          {Error ? <p className='text-red-500'>{Error}</p> : null}
         </div>
       </form>
     </main>
