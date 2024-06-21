@@ -157,14 +157,14 @@ export default function Listing() {
       }
       setLoading(true)
       SetError(false);
-      let res = await fetch(`api/listing/Create`, {
+      let res = await fetch('api/listing/Create', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formdata,
-          userref:currentuser._id
+          userref: currentuser._id,
         }),
       })
       let data=await res.json();
@@ -172,6 +172,7 @@ export default function Listing() {
       if(data.success===false){
         SetError(data.msg);
       }
+      // console.log(data);
       navigate(`/listing/${data._id}`)
     }
     catch (error) {
@@ -182,7 +183,7 @@ export default function Listing() {
 
   React.useEffect(() => {}, [progress])
 
-  // console.log(`Input Datas are ..... `,formdata)
+  console.log(`Input Datas are ..... `,formdata)
 
   return (
     <main className=' p-2 max-w-4xl mx-auto'>

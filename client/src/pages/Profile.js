@@ -237,6 +237,9 @@ export let Profile = () => {
         >
           Delete Account
         </span>
+        <span className="font-bold text-green-500 underline">
+        Show Listing
+        </span>
         <span
           className='text-red-600 font-semibold hover:cursor-pointer'
           onClick={Leavinguser}
