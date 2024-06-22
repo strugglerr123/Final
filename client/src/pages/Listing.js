@@ -183,7 +183,7 @@ export default function Listing() {
 
   React.useEffect(() => {}, [progress])
 
-  console.log(`Input Datas are ..... `,formdata)
+  // console.log(`Input Datas are ..... `,formdata)
 
   return (
     <main className=' p-2 max-w-4xl mx-auto'>

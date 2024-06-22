@@ -29,6 +29,8 @@ export let Profile = () => {
   let [imagepercent, setimagepercent] = useState(0)
   let [imageerror, setimageerror] = useState(false)
   let [imageuploadedinfo, setimageuploadedinfo] = useState({})
+  let [listerror,setlisterror]=useState(false);
+  let [userdetails,setuserdetails]=useState([]);
   // let [updatecurrentuser, setupdatecurrentuser] = useState(currentuser)
   let photofile = useRef()
 
@@ -145,6 +147,24 @@ export let Profile = () => {
     }
   }
 
+  let Show_listing=async()=>{
+    try {
+      setlisterror(false);
+      let res=await fetch(`/api/user/listing/${currentuser._id}`);
+      let data=await res.json();
+      if(data.success===false){
+        setlisterror(true);
+        return;
+      }
+      setuserdetails(data);
+      
+    } catch (error) {
+      setlisterror(true);
+    }
+  }
+
+  let a=[1,2,3,4,5];
+
   // console.log(imageuploadedinfo," ",currentuser.imageurl);
 
   return (
@@ -230,15 +250,18 @@ export let Profile = () => {
         </Link>
       </form>
 
-      <form action='Query' className='flex justify-between mt-2'>
+      <form action='Query' className='flex justify-between mt-2 mb-10'>
         <span
           className='text-red-600  font-semibold hover:cursor-pointer'
           onClick={Deletaccount}
         >
           Delete Account
         </span>
-        <span className="font-bold text-green-500 underline">
-        Show Listing
+        <span
+          className='font-bold text-green-500 underline cursor-pointer'
+          onClick={Show_listing}
+        >
+          Show Listing
         </span>
         <span
           className='text-red-600 font-semibold hover:cursor-pointer'
@@ -247,6 +270,43 @@ export let Profile = () => {
           Sign Out
         </span>
       </form>
+      <p>{listerror ? "There are Some Error in Listing" : ""}</p>
+      <div>
+        <p className="text-3xl text-center font-medium">YOUR LISTINGS</p>
+      {
+        userdetails &&
+        userdetails.map((lst) => {
+          return (
+            <div
+              key={lst._id}
+              className='border rounded-lg p-3 flex justify-between items-center mt-3'
+            >
+              <Link to={`/listing/${lst._id}`}>
+                <img
+                  src={lst.imageurl[0]}
+                  alt='Error In Loading...'
+                  className='h-20 w-20 object-contain'
+                />
+              </Link>
+              <Link
+                to={`/listing/${lst._id}`}
+                className='font-semibold truncate flex-1 hover:opacity-80 hover:text-green-500 mx-10'>
+                <p>{lst.name}</p>
+              </Link>
+
+              <div className="flex flex-col items-center">
+                <button className='capitalize font-semibold text-red-600 hover:opacity-70'>
+                  Delete
+                </button>
+                <button className='capitalize font-semibold text-green-700 opacity-75'>
+                  Edit
+                </button>
+              </div>
+            </div>
+          )
+        })}
+
+      </div>
     </div>
   )
 }
