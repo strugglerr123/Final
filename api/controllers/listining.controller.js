@@ -51,3 +51,16 @@ export let UpdateUserListing=async (req,res,next)=>{
     
   }
 }
+
+export let ShowListing=async(req,res,next)=>{
+  try {
+    let listdata=await Listing.findById(req.params.id);
+    if(!listdata){
+      return next(ErrorHandler(404,"List Not Found !!!!!!!!"))
+    }
+    res.status(200).json(listdata)
+  }
+  catch (error) {
+    next(error)
+  }
+}

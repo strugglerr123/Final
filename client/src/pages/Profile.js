@@ -303,17 +303,25 @@ export let Profile = () => {
               </Link>
               <Link
                 to={`/listing/${lst._id}`}
-                className='font-semibold truncate flex-1 hover:opacity-80 hover:text-green-500 mx-10'>
+                className='font-semibold truncate flex-1 hover:opacity-80 hover:text-green-500 mx-10'
+              >
                 <p>{lst.name}</p>
               </Link>
 
-              <div className="flex flex-col items-center">
-                <button onClick={()=>{UserListingDelete(lst._id)}} className='capitalize font-semibold text-red-600 hover:opacity-70'>
+              <div className='flex flex-col items-center'>
+                <button
+                  onClick={() => {
+                    UserListingDelete(lst._id)
+                  }}
+                  className='capitalize font-semibold text-red-600 hover:opacity-70'
+                >
                   Delete
                 </button>
-                <button className='capitalize font-semibold text-green-700 opacity-75'>
-                  Edit
-                </button>
+                <Link to={`/update-listing/${lst._id}`}>
+                  <button className='capitalize font-semibold text-green-700 opacity-75'>
+                    Edit
+                  </button>
+                </Link>
               </div>
             </div>
           )
