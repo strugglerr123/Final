@@ -29,3 +29,25 @@ export let DeleteListing = async (req, res, next) => {
     next(error)
   }
 }
+
+export let UpdateUserListing=async (req,res,next)=>{
+  let check_listing=await Listing.findById(req.params.id);
+  if(!check_listing){
+    return next(ErrorHandler(404,'Listing Not Found !!'));
+  }
+  if(req.user._id!==Listing.userref){
+    return next(ErrorHandler(401, "Unauthorised To update others Listings"))
+  }
+
+  try {
+    let new_listing=await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {new:true}
+    )
+    res.status(200).json(new_listing)
+  }
+  catch (error) {
+    
+  }
+}
