@@ -163,7 +163,20 @@ export let Profile = () => {
     }
   }
 
-  let a=[1,2,3,4,5];
+  let UserListingDelete=async(selected_id)=>{
+    try {
+      let res=await fetch(`api/listing/delete/${selected_id}`,{method:"DELETE"});
+      let data=await res.json();
+      if(data.success===false){
+        console.log(data.msg);
+        return;
+      }
+      setuserdetails((s)=>{s.filter((ele)=>{return ele._id!==selected_id})})
+    }
+    catch (error) {
+      console.log(error.msg);
+    }
+  }
 
   // console.log(imageuploadedinfo," ",currentuser.imageurl);
 
@@ -272,7 +285,7 @@ export let Profile = () => {
       </form>
       <p>{listerror ? "There are Some Error in Listing" : ""}</p>
       <div>
-        <p className="text-3xl text-center font-medium">YOUR LISTINGS</p>
+        <p className="text-3xl text-center font-medium">YOUR BOOK STALLS</p>
       {
         userdetails &&
         userdetails.map((lst) => {
@@ -295,7 +308,7 @@ export let Profile = () => {
               </Link>
 
               <div className="flex flex-col items-center">
-                <button className='capitalize font-semibold text-red-600 hover:opacity-70'>
+                <button onClick={()=>{UserListingDelete(lst._id)}} className='capitalize font-semibold text-red-600 hover:opacity-70'>
                   Delete
                 </button>
                 <button className='capitalize font-semibold text-green-700 opacity-75'>
