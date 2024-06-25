@@ -5,6 +5,7 @@ import { About } from "./pages/About"
 import { Profile } from "./pages/Profile"
 import { SignIn } from "./pages/SignIn"
 import { SignUp } from "./pages/SignUp"
+import { UserListing } from "./pages/UserListing"
 import Header from "./components/Header"
 import { Private_profile } from "./components/Private_profile"
 import Listing from "./pages/Listing"
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
+        <Route path='/listing/:id' element={<UserListing />} />
         <Route element={<Private_profile />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/create-listing' element={<Listing />} />
